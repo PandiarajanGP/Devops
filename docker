@@ -1,14 +1,8 @@
-# Using official ubuntu image as a parent image
-FROM ubuntu:latest
+# syntax=docker/dockerfile:1
 
-# Setting the working directory to /app
+FROM node:18-alpine
 WORKDIR /app
-
-# Copy the current directory contents into the container at /app
-COPY . /app
-
-# Getting the updates for Ubuntu and installing python into our environment
-RUN apt-get -y update  && apt-get install -y python
-
-# Run app.py when the container launches
-CMD ["python", "app.py"]
+COPY . .
+RUN yarn install --production
+CMD ["node", "src/index.js"]
+EXPOSE 3000
