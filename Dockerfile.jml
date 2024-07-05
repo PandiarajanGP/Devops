@@ -1,0 +1,10 @@
+version: "3"
+services:
+  oauth2-proxy:
+    build:
+      context: ./oauth2-proxy
+      dockerfile: Dockerfile
+      args:
+        VERSION: lucid_heisenberg
+        TARGETPLATFORM: linux/amd64
+        BUILDPLATFORM: linux/amd64
