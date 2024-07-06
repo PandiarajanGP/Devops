@@ -1,15 +1,20 @@
-FROM python:3.6
+FROM komljen/ubuntu
+MAINTAINER Alen Komljen <alen.komljen@live.com>
 
-# Create app directory
-WORKDIR /app
+ENV MONGO_VERSION 2.6.6
 
-# Install app dependencies
-COPY src/requirements.txt ./
+RUN \
+  apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10 && \
+  echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" \
+       > /etc/apt/sources.list.d/mongodb.list && \
+  apt-get update && \
+  apt-get -y install \
+          mongodb-org=${MONGO_VERSION} && \
+  rm -rf /var/lib/apt/lists/*
 
-RUN pip install -r requirements.txt
+VOLUME ["/data/db"]
 
-# Bundle app source
-COPY src /app
+RUN rm /usr/sbin/policy-rc.d
+CMD ["/usr/bin/mongod"]
 
-EXPOSE 8080
-CMD [ "python", "server.py" ]
+EXPOSE 27017
