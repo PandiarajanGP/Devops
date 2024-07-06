@@ -1,23 +1,15 @@
-# Use the official Python image as a base
-FROM python:3.9-slim-buster
+FROM python:3.6
 
-# Set environment variables
-ENV PYTHONUNBUFFERED 1
-ENV FLASK_APP=app.py
-ENV FLASK_RUN_HOST=0.0.0.0
-
-# Set the working directory in the container
+# Create app directory
 WORKDIR /app
 
-# Copy the requirements file and install dependencies
-COPY requirements.txt requirements.txt
+# Install app dependencies
+COPY src/requirements.txt ./
+
 RUN pip install -r requirements.txt
 
-# Copy the application code into the container
-COPY . /app
+# Bundle app source
+COPY src /app
 
-# Expose port 5000 to the outside world
-EXPOSE 5000
-
-# Run the Flask app when the container launches
-CMD ["flask", "run"]
+EXPOSE 8080
+CMD [ "python", "server.py" ]
